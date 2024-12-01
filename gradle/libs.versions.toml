@@ -1,0 +1,35 @@
+[versions]
+kotlin = "2.1.0"
+kotlin-coroutines = "1.9.0"
+kotlin-benchmark = "0.4.12"
+kotlin-serialization = "1.7.3"
+ksmt = "0.5.6"
+lwjgl = "3.3.4"
+kool = "0.15.1"
+
+[libraries]
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlin-benchmark" }
+
+kotlin-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlin-serialization" }
+kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-benchmark" }
+
+ksmt-core = { module = "io.ksmt:ksmt-core", version.ref = "ksmt" }
+ksmt-z3 = { module = "io.ksmt:ksmt-z3", version.ref = "ksmt" }
+
+kool-core = { module = "de.fabmax.kool:kool-core", version.ref = "kool" }
+kool-physics = { module = "de.fabmax.kool:kool-physics", version.ref = "kool" }
+
+lwjgl-core = { group = "org.lwjgl", name = "lwjgl", version.ref = "lwjgl" }
+lwjgl-glfw = { group = "org.lwjgl", name = "lwjgl-glfw", version.ref = "lwjgl" }
+lwjgl-jemalloc = { group = "org.lwjgl", name = "lwjgl-jemalloc", version.ref = "lwjgl" }
+lwjgl-opengl = { group = "org.lwjgl", name = "lwjgl-opengl", version.ref = "lwjgl" }
+lwjgl-stb = { group = "org.lwjgl", name = "lwjgl-stb", version.ref = "lwjgl" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-benchmark = { id = "org.jetbrains.kotlinx.benchmark", version.ref = "kotlin-benchmark" }
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+
+[bundles]
+lwjgl = ["lwjgl-core", "lwjgl-glfw", "lwjgl-jemalloc", "lwjgl-opengl", "lwjgl-stb"]

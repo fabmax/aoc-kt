@@ -27,7 +27,7 @@ import kotlin.math.atan2
 import kotlin.math.floor
 import kotlin.math.max
 
-fun main() = KoolApplication { ctx ->
+fun main() = KoolApplication {
     val puzzleInput = File("inputs/2023/day14.txt").readLines().filter { it.isNotBlank() }
 
     launchApp(ctx, puzzleInput)

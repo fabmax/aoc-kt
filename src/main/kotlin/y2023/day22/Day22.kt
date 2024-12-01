@@ -106,7 +106,7 @@ object Day22 : AocPuzzle<Int, Int>() {
     @Suppress("unused")
     fun drawBricks(brickMap: Map<Vec3i, Brick>) = thread {
         KoolApplication {
-            it.scenes += scene {
+            ctx.scenes += scene {
                 tryEnableInfiniteDepth()
                 mainRenderPass.clearColor = MdColor.GREY tone 300
                 orbitCamera {

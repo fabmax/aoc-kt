@@ -29,7 +29,7 @@ object Day25Kool {
         nodes.values.flatMap { it.connectedNames }.filter { it !in nodes }.forEach { nodes[it] = Node(it, emptyList()) }
         nodes.values.forEach { it.connect(it.connectedNames.map { id -> nodes[id]!! }) }
 
-        KoolApplication { ctx ->
+        KoolApplication {
             ctx.scenes += renderGraph(nodes)
             ctx.scenes += makeUiScene()
         }

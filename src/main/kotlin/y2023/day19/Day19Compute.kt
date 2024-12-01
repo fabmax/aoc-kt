@@ -16,7 +16,7 @@ import kotlin.system.exitProcess
 
 fun main() = KoolApplication(
     KoolConfigJvm(isVsync = false)
-) { ctx ->
+) {
     ctx.scenes += scene {
 
         val computeShader = KslComputeShader("Compute shader test") {
