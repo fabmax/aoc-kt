@@ -1,9 +1,6 @@
 package y2024.day02
 
 import AocPuzzle
-import extractNumbers
-import y2024.day02.Day02.isSafe
-import kotlin.math.abs
 
 fun main() = Day02.runAll()
 
@@ -17,45 +14,12 @@ object Day02 : AocPuzzle<Int, Int>() {
     override fun solve2(input: List<String>): Int {
         return input
             .map { it.split(" ").map(String::toInt) }
-            .count { it.isSafe2() }
-    }
-
-    private fun List<Int>.isSafe(): Boolean {
-        return isIncreasingSafe() || isDecreasingSafe()
-    }
-
-    private fun List<Int>.isSafe2(): Boolean {
-        for (i in indices) {
-            val safer = toMutableList()
-            safer.removeAt(i)
-            if (safer.isSafe()) {
-                return true
+            .count { levels ->
+                levels.isSafe() || levels.indices.any { i -> levels.toMutableList().apply { removeAt(i) }.isSafe() }
             }
-        }
-        return isSafe()
     }
 
-    private fun List<Int>.isIncreasingSafe(): Boolean {
-        var prev = first()
-        for (i in 1 until size) {
-            val n = get(i)
-            if (n <= prev || n - prev > 3) {
-                return false
-            }
-            prev = n
-        }
-        return true
-    }
-
-    private fun List<Int>.isDecreasingSafe(): Boolean {
-        var prev = first()
-        for (i in 1 until size) {
-            val n = get(i)
-            if (n >= prev || prev - n > 3) {
-                return false
-            }
-            prev = n
-        }
-        return true
-    }
+    private fun List<Int>.isSafe(): Boolean = isIncreasingSafe() || isDecreasingSafe()
+    private fun List<Int>.isIncreasingSafe(): Boolean = windowed(2).all { (a, b) -> (b - a) in (1..3) }
+    private fun List<Int>.isDecreasingSafe(): Boolean = windowed(2).all { (a, b) -> (a - b) in (1..3) }
 }
