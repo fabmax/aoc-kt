@@ -60,4 +60,12 @@ private class WordMap(val lines: List<String>) {
         if ((bl == 'M' && tr == 'S') || (bl == 'S' && tr == 'M')) return 1
         return 0
     }
+
+    /*
+    Benchmark              Mode  Cnt        Score        Error  Units
+    Day04Benchmark.part1  thrpt    5     3131,892 ±    238,967  ops/s
+    Day04Benchmark.part2  thrpt    5     7509,873 ±   1914,497  ops/s
+    Day04Benchmark.test1  thrpt    5  1155511,848 ±  19618,304  ops/s
+    Day04Benchmark.test2  thrpt    5  2442548,709 ± 102560,468  ops/s
+     */
 }

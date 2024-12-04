@@ -36,11 +36,13 @@ allOpen {
 benchmark {
     configurations {
         named("main") {
-            warmups = 3
+            warmups = 5
             iterations = 5
             iterationTime = 1000
             iterationTimeUnit = "millis"
-            include("y2023.*Day25")
+            outputTimeUnit = "sec"
+            mode = "thrpt"
+            include("y2024.*Day04")
         }
     }
     targets {
