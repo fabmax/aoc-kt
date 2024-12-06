@@ -70,6 +70,14 @@ fun Vec3d(str: String, delim: Char = ','): Vec3d {
     return Vec3d(x, y, z)
 }
 
+fun gridSequence(width: Int, height: Int) = sequence {
+    for (y in 0 until height) {
+        for (x in 0 until width) {
+            yield(Vec2i(x, y))
+        }
+    }
+}
+
 fun intersectLines(a1: Vec2d, a2: Vec2d, b1: Vec2d, b2: Vec2d): Vec2d? {
     val denom = (a1.x - a2.x) * (b1.y - b2.y) - (a1.y - a2.y) * (b1.x - b2.x)
     if (denom != 0.0) {

@@ -1,30 +1,19 @@
 package y2024.day04
 
 import AocPuzzle
+import gridSequence
 
 fun main() = Day04.runAll()
 
 object Day04 : AocPuzzle<Int, Int>() {
     override fun solve1(input: List<String>): Int {
         val map = WordMap(input)
-        var cnt = 0
-        for (y in 0 until map.height) {
-            for (x in 0 until map.width) {
-                cnt += map.countXmas1(x, y)
-            }
-        }
-        return cnt
+        return gridSequence(map.width, map.height).sumOf { map.countXmas1(it.x, it.y) }
     }
 
     override fun solve2(input: List<String>): Int {
         val map = WordMap(input)
-        var cnt = 0
-        for (y in 0 until map.height) {
-            for (x in 0 until map.width) {
-                cnt += map.countXmas2(x, y)
-            }
-        }
-        return cnt
+        return gridSequence(map.width, map.height).sumOf { map.countXmas2(it.x, it.y) }
     }
 }
 
