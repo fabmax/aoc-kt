@@ -3,7 +3,10 @@ package y2024.day06
 import AocPuzzle
 import de.fabmax.kool.math.Vec2i
 import gridSequence
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 
 fun main() = Day06.runAll()
 
@@ -25,24 +28,22 @@ object Day06 : AocPuzzle<Int, Int>() {
         } while (moveResult == MoveResult.CONTINUE)
 
         return runBlocking(Dispatchers.Default) {
-            gridSequence(map.width, map.height).map { obstaclePos ->
-                async {
-                    if (obstaclePos == startPos || obstaclePos !in map.passedFields) {
-                        return@async 0
+            gridSequence(map.width, map.height)
+                .filter { obstaclePos -> obstaclePos != startPos && obstaclePos in map.passedFields }
+                .map { obstaclePos ->
+                    async {
+                        val obstacleMap = GuardMap(map.map, startPos, startDir)
+                        obstacleMap.addObstacle(obstaclePos)
+                        do {
+                            val moveResult = obstacleMap.move()
+                            if (moveResult == MoveResult.LOOP) {
+                                return@async 1
+                            }
+                        } while (moveResult == MoveResult.CONTINUE)
+                        0
                     }
-
-                    val obstacleMap = GuardMap(map.map, startPos, startDir)
-                    obstacleMap.addObstacle(obstaclePos)
-                    do {
-                        val moveResult = obstacleMap.move()
-                        if (moveResult == MoveResult.LOOP) {
-                            return@async 1
-                        }
-                    } while (moveResult == MoveResult.CONTINUE)
-                    0
                 }
-            }
-            .toList().awaitAll().sum()
+                .toList().awaitAll().sum()
         }
     }
 }
