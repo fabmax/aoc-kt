@@ -40,9 +40,9 @@ benchmark {
             iterations = 5
             iterationTime = 1000
             iterationTimeUnit = "millis"
-            outputTimeUnit = "sec"
-            mode = "thrpt"
-            include("y2024.*Day04")
+            outputTimeUnit = "millis"
+            //mode = "thrpt"
+            include("y2024.*Day07")
         }
     }
     targets {

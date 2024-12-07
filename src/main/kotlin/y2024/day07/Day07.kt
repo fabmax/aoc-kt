@@ -2,59 +2,56 @@ package y2024.day07
 
 import AocPuzzle
 import extractLongNumbers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+import permutationSequence
 
 fun main() = Day07.runAll()
 
 object Day07 : AocPuzzle<Long, Long>() {
     override fun solve1(input: List<String>): Long {
         val testVals = input.map { it.substringBefore(":").toLong() }
-        val operands = input.map { it.substringAfter(":").extractLongNumbers() }
+        val numbers = input.map { it.substringAfter(":").extractLongNumbers() }
+        val ops = listOf(Operator.Plus, Operator.Mul)
 
-        return testVals.filterIndexed { index, t ->
-            t in makeValues(operands[index], listOf(Operand.Plus, Operand.Mul)).toSet()
-        }.sum()
+        return testVals
+            .zip(numbers) { value, nums -> valueSequence(nums, ops).find { it == value } }
+            .filterNotNull().sum()
     }
 
     override fun solve2(input: List<String>): Long {
         val testVals = input.map { it.substringBefore(":").toLong() }
-        val operands = input.map { it.substringAfter(":").extractLongNumbers() }
+        val numbers = input.map { it.substringAfter(":").extractLongNumbers() }
+        val ops = listOf(Operator.Plus, Operator.Mul, Operator.Concat)
 
-        return testVals.filterIndexed { index, t ->
-            t in makeValues(operands[index], listOf(Operand.Plus, Operand.Mul, Operand.Concat)).toSet()
-        }.sum()
-    }
-
-    fun makeValues(nums: List<Long>, ops: List<Operand>) = sequence {
-        val opIndices = IntArray(nums.size - 1)
-        while (opIndices[0] < ops.size) {
-            val applyOps = List(opIndices.size) { ops[opIndices[it]] }
-            yield(makeValue(nums, applyOps))
-
-            opIndices[opIndices.lastIndex]++
-            for (i in opIndices.lastIndex downTo 1) {
-                if (opIndices[i] == ops.size) {
-                    opIndices[i] = 0
-                    opIndices[i-1]++
+        return runBlocking(Dispatchers.Default) {
+            testVals.indices.map { i ->
+                async {
+                    valueSequence(numbers[i], ops).find { it == testVals[i] }
                 }
-            }
+            }.awaitAll().filterNotNull().sum()
         }
     }
 
-    fun makeValue(nums: List<Long>, ops: List<Operand>) =
-        nums.subList(1, nums.size).foldIndexed(nums.first()) { i, acc, num -> ops[i].apply(acc, num) }
+    fun valueSequence(nums: List<Long>, operators: List<Operator>) =
+        permutationSequence(operators, nums.size - 1).map { applyOps ->
+            nums.subList(1, nums.size).foldIndexed(nums.first()) { i, acc, num -> applyOps[i](acc, num) }
+        }
 
-    enum class Operand {
-        Plus {
-            override fun apply(a: Long, b: Long) = a + b
-        },
-        Mul {
-            override fun apply(a: Long, b: Long) = a * b
-        },
-        Concat {
-            override fun apply(a: Long, b: Long) = "$a$b".toLong()
-        },
-        ;
+    enum class Operator {
+        Plus { override fun invoke(a: Long, b: Long) = a + b },
+        Mul { override fun invoke(a: Long, b: Long) = a * b },
+        Concat { override fun invoke(a: Long, b: Long) = "$a$b".toLong() };
 
-        abstract fun apply(a: Long, b: Long): Long
+        abstract operator fun invoke(a: Long, b: Long): Long
     }
+
+    /*
+    Benchmark             Mode  Cnt    Score    Error  Units
+    Day07Benchmark.part1  avgt    5   20,264 ±  0,579  ms/op
+    Day07Benchmark.part2  avgt    5  152,256 ±  8,489  ms/op
+    */
+
 }

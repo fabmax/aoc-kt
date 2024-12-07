@@ -28,6 +28,21 @@ fun <T> Collection<T>.permutations(): Sequence<List<T>> = sequence {
     }
 }
 
+fun <T> permutationSequence(elements: List<T>, places: Int): Sequence<List<T>> = sequence {
+    val indices = IntArray(places) { 0 }
+    while (indices[0] < elements.size) {
+        yield(List(places) { elements[indices[it]] })
+
+        indices[indices.lastIndex]++
+        for (i in indices.lastIndex downTo 1) {
+            if (indices[i] == elements.size) {
+                indices[i] = 0
+                indices[i-1]++
+            }
+        }
+    }
+}
+
 inline fun <T> List<T>.splitBy(predicate: (T) -> Boolean): List<List<T>> {
     return (listOf(-1) + indices.filter { predicate(get(it)) } + listOf(size))
         .zipWithNext { from, to -> subList(from + 1, to) }
