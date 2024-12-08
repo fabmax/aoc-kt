@@ -1,12 +1,12 @@
 package y2024.day07
 
 import AocPuzzle
+import combinations
 import extractLongNumbers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
-import permutationSequence
 
 fun main() = Day07.runAll()
 
@@ -36,7 +36,7 @@ object Day07 : AocPuzzle<Long, Long>() {
     }
 
     fun valueSequence(nums: List<Long>, operators: List<Operator>) =
-        permutationSequence(operators, nums.size - 1).map { applyOps ->
+        operators.combinations(nums.size - 1).map { applyOps ->
             nums.subList(1, nums.size).foldIndexed(nums.first()) { i, acc, num -> applyOps[i](acc, num) }
         }
 

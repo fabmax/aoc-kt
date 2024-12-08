@@ -28,14 +28,14 @@ fun <T> Collection<T>.permutations(): Sequence<List<T>> = sequence {
     }
 }
 
-fun <T> permutationSequence(elements: List<T>, places: Int): Sequence<List<T>> = sequence {
+fun <T> List<T>.combinations(places: Int): Sequence<List<T>> = sequence {
     val indices = IntArray(places) { 0 }
-    while (indices[0] < elements.size) {
-        yield(List(places) { elements[indices[it]] })
+    while (indices[0] < size) {
+        yield(List(places) { get(indices[it]) })
 
         indices[indices.lastIndex]++
         for (i in indices.lastIndex downTo 1) {
-            if (indices[i] == elements.size) {
+            if (indices[i] == size) {
                 indices[i] = 0
                 indices[i-1]++
             }
