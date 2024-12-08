@@ -2,6 +2,7 @@ package y2024.day08
 
 import AocPuzzle
 import de.fabmax.kool.math.Vec2i
+import isInLimits
 
 fun main() = Day08.runAll()
 
@@ -33,9 +34,5 @@ object Day08 : AocPuzzle<Int, Int>() {
                     }
                 }
         }.filter { it.isInLimits(width, height) }.distinct().count()
-    }
-
-    private fun Vec2i.isInLimits(width: Int, height: Int): Boolean {
-        return x in 0 until width && y in 0 until height
     }
 }

@@ -68,7 +68,11 @@ fun IntRange.clipUpper(max: Int): IntRange {
     return (first..kotlin.math.min(last, max))
 }
 
-fun Vec2i.manhattanDistance(other: Vec2i):Int = abs(x - other.x) + abs(y - other.y)
+fun Vec2i.manhattanDistance(other: Vec2i): Int = abs(x - other.x) + abs(y - other.y)
+
+fun Vec2i.isInLimits(width: Int, height: Int): Boolean {
+    return x in 0 until width && y in 0 until height
+}
 
 fun Vec3i(str: String, delim: Char = ','): Vec3i {
     val (x, y, z) = str.split(delim).filter { it.isNotBlank() }.map { it.trim().toInt() }
