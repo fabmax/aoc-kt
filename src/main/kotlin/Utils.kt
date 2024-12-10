@@ -43,6 +43,11 @@ fun <T> List<T>.combinations(places: Int): Sequence<List<T>> = sequence {
     }
 }
 
+fun coordSequence(width: Int, height: Int) = coordSequence(0 until width, 0 until height)
+
+fun coordSequence(xRange: IntRange, yRange: IntRange) =
+    yRange.asSequence().flatMap { y -> xRange.asSequence().map { x -> Vec2i(x, y) } }
+
 inline fun <T> List<T>.splitBy(predicate: (T) -> Boolean): List<List<T>> {
     return (listOf(-1) + indices.filter { predicate(get(it)) } + listOf(size))
         .zipWithNext { from, to -> subList(from + 1, to) }
