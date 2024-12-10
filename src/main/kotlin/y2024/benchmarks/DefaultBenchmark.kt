@@ -4,14 +4,14 @@ package y2024.benchmarks
 
 import AocPuzzle
 import kotlinx.benchmark.*
-import y2024.day04.Day04
+import y2024.day10.Day10
 
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(BenchmarkTimeUnit.MILLISECONDS)
-class Day04Benchmark {
+class DefaultBenchmark {
 
-    val target = Day04
+    val target = Day10
 
     @Benchmark
     fun test1(): Int {

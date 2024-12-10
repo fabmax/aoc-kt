@@ -42,7 +42,7 @@ benchmark {
             iterationTimeUnit = "millis"
             outputTimeUnit = "millis"
             //mode = "thrpt"
-            include("y2024.*Day07")
+            include("y2024.*DefaultBenchmark")
         }
     }
     targets {

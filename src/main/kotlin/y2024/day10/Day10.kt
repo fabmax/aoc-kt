@@ -62,4 +62,12 @@ class HikingMap(input: List<String>) {
         val DOWN = Vec2i(0, 1)
         val DIRS = listOf(LEFT, RIGHT, UP, DOWN)
     }
+
+    /*
+    Benchmark               Mode  Cnt  Score    Error  Units
+    DefaultBenchmark.part1  avgt    5  0,818 ±  0,045  ms/op
+    DefaultBenchmark.part2  avgt    5  0,712 ±  0,026  ms/op
+    DefaultBenchmark.test1  avgt    5  0,018 ±  0,003  ms/op
+    DefaultBenchmark.test2  avgt    5  0,019 ±  0,001  ms/op
+     */
 }
