@@ -18,9 +18,9 @@ object Day11 : AocPuzzle<Long, Long>() {
 
     fun blinkMemoized(stone: Long, iteration: Int): Long {
         if (iteration == 0) { return 1L }
-        val key = iteration to stone
-        memo[key]?.let { return it }
-        return stone.blinkSingle().sumOf { blinkMemoized(it, iteration - 1) }.also { memo[key] = it }
+        return memo.getOrPut(iteration to stone) {
+            stone.blinkSingle().sumOf { blinkMemoized(it, iteration - 1) }
+        }
     }
 
     fun Long.blinkSingle(): List<Long> = buildList {
