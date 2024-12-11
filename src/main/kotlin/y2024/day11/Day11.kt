@@ -28,10 +28,7 @@ object Day11 : AocPuzzle<Long, Long>() {
         val stoneString = "$stone"
         when {
             stone == 0L -> add(1L)
-            stoneString.length % 2 == 0 -> {
-                add(stoneString.substring(0, stoneString.length / 2).toLong())
-                add(stoneString.substring(stoneString.length / 2, stoneString.length).toLong())
-            }
+            stoneString.length % 2 == 0 -> stoneString.chunked(stoneString.length / 2).forEach { add(it.toLong()) }
             else -> add(stone * 2024)
         }
     }
