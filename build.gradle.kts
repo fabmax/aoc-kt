@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.kotlin.benchmark)
     implementation(libs.kotlin.serialization.core)
     implementation(libs.kotlin.serialization.json)
+    implementation(libs.commons.math    )
 
     implementation(libs.ksmt.core)
     implementation(libs.ksmt.z3)

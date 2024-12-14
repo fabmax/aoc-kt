@@ -14,6 +14,7 @@ kotlin-benchmark = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime",
 kotlin-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlin-serialization" }
 kotlin-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-benchmark" }
 
+commons-math = { module = "org.apache.commons:commons-math3", version = "3.6.1" }
 ksmt-core = { module = "io.ksmt:ksmt-core", version.ref = "ksmt" }
 ksmt-z3 = { module = "io.ksmt:ksmt-z3", version.ref = "ksmt" }
 
