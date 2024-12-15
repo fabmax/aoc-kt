@@ -104,10 +104,14 @@ abstract class AocPuzzle<A: Any, B: Any> {
     }
 
     private fun prefix(answer: Any?, expected: String?): String {
-        return when {
-            expected == null -> "❔ "
-            answer.toString() == expected -> "✅ "
-            else -> "❌ "
+        return when (answer?.toString()) {
+            null -> coloredString("[??] ", AnsiColor.CYAN)
+            expected -> coloredString("[OK] ", AnsiColor.BRIGHT_GREEN)
+            else -> coloredString("[NO] ", AnsiColor.BRIGHT_RED)
+
+            //null -> "❔ "
+            //expected -> "✅ "
+            //else -> "❌ "
         }
     }
 

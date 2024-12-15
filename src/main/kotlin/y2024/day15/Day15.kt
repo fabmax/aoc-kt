@@ -27,7 +27,7 @@ object Day15 : AocPuzzle<Int, Int>() {
 
     fun Warehouse.simulate(input: List<String>) {
         val moves = input.filter { !it.startsWith("#") && it.isNotBlank() }.joinToString(separator = "")
-        moves.forEachIndexed { i, it ->
+        moves.forEach { it ->
             when (it) {
                 '>' -> moveRobot(Vec2i.X_AXIS)
                 '<' -> moveRobot(Vec2i.NEG_X_AXIS)

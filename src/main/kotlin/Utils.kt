@@ -127,11 +127,13 @@ fun leastCommonMultiple(ints: Collection<Int>): Long {
         .fold(1L) { prod, value -> prod * value }
 }
 
-fun printColored(text: String, fg: AnsiColor? = null, bg: AnsiColor? = null) {
+fun printColored(text: String, fg: AnsiColor? = null, bg: AnsiColor? = null) = print(coloredString(text, fg, bg))
+
+fun coloredString(text: String, fg: AnsiColor? = null, bg: AnsiColor? = null): String {
     val fgCode = fg?.let { "${it.fg}" } ?: ""
     val bgCode = bg?.let { "${it.bg}" } ?: ""
     val sep = if (fgCode.isNotBlank() && bgCode.isNotBlank()) ";" else ""
-    print("\u001b[${fgCode}${sep}${bgCode}m$text\u001B[0m")
+    return "\u001b[${fgCode}${sep}${bgCode}m$text\u001B[0m"
 }
 
 inline fun <R> timed(block: () -> R): R {
