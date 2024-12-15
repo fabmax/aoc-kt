@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+/*@file:Suppress("unused")
 
 package y2024.benchmarks
 
@@ -36,4 +36,4 @@ class DefaultBenchmark {
         target.prepareRun(AocPuzzle.Run.PuzzleRun)
         return target.solve2(target.input)
     }
-}
+}*/

@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+/*@file:Suppress("unused")
 
 package y2023.benchmarks
 
@@ -25,4 +25,4 @@ class Day25Benchmark {
         target.solve1(target.input)
     }
 
-}
+}*/

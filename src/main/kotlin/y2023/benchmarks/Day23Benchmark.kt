@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+/*@file:Suppress("unused")
 
 package y2023.benchmarks
 
@@ -43,4 +43,4 @@ class Day23Benchmark {
         Day23.Maze(target.input, true).findLongestPathExhaustive()
     }
 
-}
+}*/
