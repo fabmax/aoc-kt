@@ -8,26 +8,27 @@ fun main() = Day15.runAll()
 
 object Day15 : AocPuzzle<Int, Int>() {
     override fun solve1(input: List<String>): Int {
-        val mapInput = input.takeWhile { it.isNotBlank() }
-
-        val warehouse = SmallWarehouse(mapInput)
-        warehouse.simulate(input)
-        return warehouse.gps()
+        val warehouse = SmallWarehouse(input.takeWhile { it.isNotBlank() })
+        return warehouse.simulate(input)
     }
 
     override fun solve2(input: List<String>): Int {
         val largeInput = input
-            .map { it.replace("#", "##").replace("O", "[]").replace(".", "..").replace("@", "@.") }
+            .map {
+                it.replace("#", "##")
+                    .replace("O", "[]")
+                    .replace(".", "..")
+                    .replace("@", "@.")
+            }
             .takeWhile { it.isNotBlank() }
 
         val warehouse = LargeWarehouse(largeInput)
-        warehouse.simulate(input)
-        return warehouse.gps()
+        return warehouse.simulate(input)
     }
 
-    fun Warehouse.simulate(input: List<String>) {
+    fun Warehouse.simulate(input: List<String>): Int {
         val moves = input.filter { !it.startsWith("#") && it.isNotBlank() }.joinToString(separator = "")
-        moves.forEach { it ->
+        moves.forEach {
             when (it) {
                 '>' -> moveRobot(Vec2i.X_AXIS)
                 '<' -> moveRobot(Vec2i.NEG_X_AXIS)
@@ -35,11 +36,13 @@ object Day15 : AocPuzzle<Int, Int>() {
                 'v' -> moveRobot(Vec2i.Y_AXIS)
             }
         }
+        return gps()
     }
 }
 
 interface Warehouse {
-    fun moveRobot(pos: Vec2i)
+    fun moveRobot(dir: Vec2i)
+    fun gps(): Int
 }
 
 class SmallWarehouse(mapInput: List<String>) : Warehouse {
@@ -57,9 +60,7 @@ class SmallWarehouse(mapInput: List<String>) : Warehouse {
         }
     }.toMutableSet()
 
-    fun canMoveTo(pos: Vec2i): Boolean {
-        return map.getOrNull(pos.y)?.getOrNull(pos.x) == '.'
-    }
+    fun canMoveTo(pos: Vec2i): Boolean = map.getOrNull(pos.y)?.getOrNull(pos.x) == '.'
 
     override fun moveRobot(dir: Vec2i) {
         val nextPos = robot + dir
@@ -78,9 +79,7 @@ class SmallWarehouse(mapInput: List<String>) : Warehouse {
         }
     }
 
-    fun gps(): Int {
-        return boxes.sumOf { it.y * 100 + it.x }
-    }
+    override fun gps(): Int = boxes.sumOf { it.y * 100 + it.x }
 }
 
 class LargeWarehouse(mapInput: List<String>) : Warehouse {
@@ -98,9 +97,7 @@ class LargeWarehouse(mapInput: List<String>) : Warehouse {
         }
     }.toMutableSet()
 
-    fun canMoveTo(pos: Vec2i): Boolean {
-        return map.getOrNull(pos.y)?.getOrNull(pos.x) == '.'
-    }
+    fun canMoveTo(pos: Vec2i): Boolean = map.getOrNull(pos.y)?.getOrNull(pos.x) == '.'
 
     override fun moveRobot(dir: Vec2i) {
         val collPositions = collectPositions(setOf(robot), dir)
@@ -126,7 +123,5 @@ class LargeWarehouse(mapInput: List<String>) : Warehouse {
         }
     }
 
-    fun gps(): Int {
-        return boxes.sumOf { it.y * 100 + it.x }
-    }
+    override fun gps(): Int = boxes.sumOf { it.y * 100 + it.x }
 }

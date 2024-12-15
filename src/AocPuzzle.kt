@@ -115,10 +115,10 @@ abstract class AocPuzzle<A: Any, B: Any> {
         }
     }
 
-    sealed class Run {
-        data class TestRun(val testIdx: Int) : Run()
-        data object PuzzleRun : Run()
+    sealed interface Run {
+        data class TestRun(val testIdx: Int) : Run
+        data object PuzzleRun : Run
     }
     
-    class PartNotImplementedException(val part: Int) :  IllegalStateException()
+    class PartNotImplementedException(val part: Int) : IllegalStateException()
 }
