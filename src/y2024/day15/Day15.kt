@@ -6,6 +6,11 @@ import de.fabmax.kool.math.Vec2i
 
 fun main() = Day15.runAll()
 
+/*
+Part 1 median:     0,714 ms  (6975 benchmark iterations)
+Part 2 median:     3,845 ms  (1301 benchmark iterations)
+ */
+
 object Day15 : AocPuzzle<Int, Int>() {
     override fun solve1(input: List<String>): Int {
         val warehouse = SmallWarehouse(input.takeWhile { it.isNotBlank() })

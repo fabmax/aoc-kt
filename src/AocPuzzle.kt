@@ -78,6 +78,43 @@ abstract class AocPuzzle<A: Any, B: Any> {
         }
     }
 
+    fun runBenchmark(warmupSecs: Int = 3, benchmarkSecs: Int = 5) {
+        prepareRun(Run.PuzzleRun)
+
+        println("Warming up part 1...")
+        repeat(warmupSecs) { runTimed { solve1(input) } }
+        println("Benchmarking part 1...")
+        val result1 = (1..benchmarkSecs).map { runTimed { solve1(input) } }.sortedBy { it.second }
+
+        println("Warming up part 2...")
+        repeat(warmupSecs) { runTimed { solve2(input) } }
+        println("Benchmarking part 2...")
+        val result2 = (1..benchmarkSecs).map { runTimed { solve2(input) } }.sortedBy { it.second }
+
+        println("-----------------------------")
+        val iterations1 = result1.sumOf { it.first }
+        val iterations2 = result2.sumOf { it.first }
+        val median1 = result1[benchmarkSecs / 2].second
+        val median2 = result2[benchmarkSecs / 2].second
+        System.out.printf("Part 1 median:%10.3f ms  (%d benchmark iterations)\n", median1, iterations1)
+        System.out.printf("Part 2 median:%10.3f ms  (%d benchmark iterations)\n", median2, iterations2)
+    }
+
+    private inline fun runTimed(durationNanos: Long = 1_000_000_000L, block: () -> Unit): Pair<Int, Double> {
+        val start = System.nanoTime()
+        var t = System.nanoTime()
+        var count = 0
+        while (t - start < durationNanos) {
+            block()
+            count++
+            t = System.nanoTime()
+        }
+
+        val millisPerOp = (t - start) / (1e6 * count)
+        System.out.printf("%10.3f ms\n", millisPerOp, millisPerOp)
+        return count to millisPerOp
+    }
+
     private fun runParts(part1: Boolean, part2: Boolean) {
         if (part1) {
             runPart(1, expected1)
