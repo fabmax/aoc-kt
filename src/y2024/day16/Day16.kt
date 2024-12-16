@@ -6,7 +6,7 @@ import de.fabmax.kool.math.Vec2i
 import printColored
 import java.util.PriorityQueue
 
-fun main() = Day16.runBenchmark()
+fun main() = Day16.runAll()
 
 object Day16 : AocPuzzle<Int, Int>() {
     override fun solve1(input: List<String>): Int = solve(input, false).first
@@ -28,11 +28,20 @@ object Day16 : AocPuzzle<Int, Int>() {
 
         val open = PriorityQueue<Pair<Int, Reindeer>> { a, b -> a.first.compareTo(b.first) }
         open.add(0 to start)
+        var bestCost = Int.MAX_VALUE
+
         while (open.isNotEmpty()) {
             val (cost, rnd) = open.poll()
             val oldCost = costs.getOrPut(rnd) { cost }
 
-            if (cost <= oldCost) {
+            if (rnd.position == end) {
+                if (cost < bestCost) {
+                    bestCost = cost
+                }
+                continue
+            }
+
+            if (cost <= oldCost && cost < bestCost) {
                 val dirStraight = rnd.heading
                 val dirLeft = rnd.heading.turnLeft()
                 val dirRight = rnd.heading.turnRight()
@@ -52,8 +61,7 @@ object Day16 : AocPuzzle<Int, Int>() {
         val endRnd = DIRS.map { Reindeer(end, it) }.filter { it in costs }.minBy { costs[it]!! }
         val bests = if (computePt2) collectBestPaths(start, endRnd, costs).map { it.position }.toSet() else emptySet()
 
-        val cost = DIRS.mapNotNull { costs[Reindeer(end, it)] }.minOrNull() ?: -1
-        return cost to bests.size
+        return bestCost to bests.size
     }
 
     private fun collectBestPaths(start: Reindeer, end: Reindeer, costs: Map<Reindeer, Int>): Set<Reindeer> {
