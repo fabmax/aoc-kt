@@ -141,13 +141,13 @@ abstract class AocPuzzle<A: Any, B: Any> {
     }
 
     private fun prefix(answer: Any?, expected: String?): String {
-        return when (answer?.toString()) {
+        return when(expected) {
             null -> coloredString("[??] ", AnsiColor.CYAN)
-            expected -> coloredString("[OK] ", AnsiColor.BRIGHT_GREEN)
+            answer.toString() -> coloredString("[OK] ", AnsiColor.BRIGHT_GREEN)
             else -> coloredString("[NO] ", AnsiColor.BRIGHT_RED)
 
             //null -> "❔ "
-            //expected -> "✅ "
+            //answer.toString() -> "✅ "
             //else -> "❌ "
         }
     }
