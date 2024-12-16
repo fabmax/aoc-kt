@@ -3,8 +3,7 @@ package y2024.day16
 import AocPuzzle
 import coordSequence
 import de.fabmax.kool.math.Vec2i
-import printColored
-import java.util.PriorityQueue
+import java.util.*
 
 fun main() = Day16.runAll()
 
@@ -17,18 +16,15 @@ object Day16 : AocPuzzle<Int, Int>() {
         val height = input.size
         val start = Reindeer(coordSequence(width, height).first { input[it] == 'S' }, EAST)
         val end = coordSequence(width, height).first { input[it] == 'E' }
-        return findPath(input, start, end, computePt2)
+        val inputClean = input.map { it.replace('E', '.') }
+        return findPath(inputClean, start, end, computePt2)
     }
 
-    private operator fun List<String>.get(pos: Vec2i): Char? = getOrNull(pos.y)?.getOrNull(pos.x)
-
     private fun findPath(input: List<String>, start: Reindeer, end: Vec2i, computePt2: Boolean): Pair<Int, Int> {
-        val validFields = setOf('.', 'E')
+        var bestCost = Int.MAX_VALUE
         val costs = mutableMapOf<Reindeer, Int>()
-
         val open = PriorityQueue<Pair<Int, Reindeer>> { a, b -> a.first.compareTo(b.first) }
         open.add(0 to start)
-        var bestCost = Int.MAX_VALUE
 
         while (open.isNotEmpty()) {
             val (cost, rnd) = open.poll()
@@ -46,13 +42,13 @@ object Day16 : AocPuzzle<Int, Int>() {
                 val dirLeft = rnd.heading.turnLeft()
                 val dirRight = rnd.heading.turnRight()
 
-                if (input[rnd.position + dirStraight] in validFields) {
+                if (input[rnd.position + dirStraight] == '.') {
                     open.add((cost + 1) to rnd.copy(position = rnd.position + dirStraight))
                 }
-                if (input[rnd.position + dirLeft] in validFields) {
+                if (input[rnd.position + dirLeft] == '.') {
                     open.add((cost + 1001) to rnd.copy(position = rnd.position + dirLeft, heading = dirLeft))
                 }
-                if (input[rnd.position + dirRight] in validFields) {
+                if (input[rnd.position + dirRight] == '.') {
                     open.add((cost + 1001) to rnd.copy(position = rnd.position + dirRight, heading = dirRight))
                 }
             }
@@ -70,13 +66,12 @@ object Day16 : AocPuzzle<Int, Int>() {
 
         while (pos.any { it != start }) {
             pos = buildList {
-                pos.forEach { itPos ->
-                    bests.add(itPos)
-                    val nextCost = costs[itPos]!!
-
+                pos.forEach { toPos ->
+                    val toCost = costs[toPos]!!
+                    bests.add(toPos)
                     DIRS
-                        .flatMap { dir -> DIRS.map { Reindeer(itPos.position + dir, it) } }
-                        .filter { prev -> isValidMove(prev, itPos, costs[prev], nextCost) }
+                        .flatMap { dir -> DIRS.map { Reindeer(toPos.position + dir, it) } }
+                        .filter { from -> isValidMove(from, toPos, costs[from], toCost) }
                         .forEach { add(it) }
                 }
             }
@@ -85,17 +80,19 @@ object Day16 : AocPuzzle<Int, Int>() {
         return bests
     }
 
-    private fun isValidMove(prev: Reindeer, next: Reindeer, prevCost: Int?, nextCost: Int): Boolean {
-        if (prevCost == null) {
+    private fun isValidMove(from: Reindeer, to: Reindeer, fromCost: Int?, toCost: Int): Boolean {
+        if (fromCost == null) {
             return false
         }
 
-        val deltaCost = nextCost - prevCost
-        val validStraight = prev.position + prev.heading == next.position && deltaCost == 1
-        val validLeft = prev.position + prev.heading.turnLeft() == next.position && deltaCost == 1001
-        val validRight = prev.position + prev.heading.turnRight() == next.position && deltaCost == 1001
+        val deltaCost = toCost - fromCost
+        val validStraight = from.position + from.heading == to.position && deltaCost == 1
+        val validLeft = from.position + from.heading.turnLeft() == to.position && deltaCost == 1001
+        val validRight = from.position + from.heading.turnRight() == to.position && deltaCost == 1001
         return validStraight || validLeft || validRight
     }
+
+    private operator fun List<String>.get(pos: Vec2i): Char? = getOrNull(pos.y)?.getOrNull(pos.x)
 
     val EAST = Vec2i(1, 0)
     val SOUTH = Vec2i(0, 1)
