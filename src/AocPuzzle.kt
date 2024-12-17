@@ -134,7 +134,7 @@ abstract class AocPuzzle<A: Any, B: Any> {
             }
             val t1 = (System.nanoTime() - t) / 1e6
             val answerStr = "${prefix(answer, expected)}Answer part $part: $answer"
-            println("  %-36s%9.3f ms".format(answerStr, t1))
+            println("  %-36s %9.3f ms".format(answerStr, t1))
         } catch (e: PartNotImplementedException) {
             println("  Part ${e.part} not yet implemented")
         }
