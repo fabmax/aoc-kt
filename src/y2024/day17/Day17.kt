@@ -52,14 +52,14 @@ class ChronospatialComputer(
         val opValue = program[instructionPtr + 1]
 
         when (code) {
-            adv -> regA = regA shr comboOp(opValue).toInt()
-            bxl -> regB = regB xor literalOp(opValue).toLong()
-            bst -> regB = comboOp(opValue) and 0x7
-            jnz -> if (regA != 0L) instructionPtr = literalOp(opValue) - 2
+            adv -> regA = regA shr opValue.combo.toInt()
+            bxl -> regB = regB xor opValue.literal.toLong()
+            bst -> regB = opValue.combo and 0x7
+            jnz -> if (regA != 0L) instructionPtr = opValue.literal - 2
             bxc -> regB = regB xor regC
-            out -> output += (comboOp(opValue) and 0x7).toInt()
-            bdv -> regB = regA shr comboOp(opValue).toInt()
-            cdv -> regC = regA shr comboOp(opValue).toInt()
+            out -> output += (opValue.combo and 0x7).toInt()
+            bdv -> regB = regA shr opValue.combo.toInt()
+            cdv -> regC = regA shr opValue.combo.toInt()
             else -> error("Invalid instruction: $code")
         }
 
@@ -67,17 +67,15 @@ class ChronospatialComputer(
         return instructionPtr < program.size
     }
 
-    private fun comboOp(operand: Int): Long {
-        return when (operand) {
-            in 0..3 -> operand.toLong()
-            4 -> regA
-            5 -> regB
-            6 -> regC
-            else -> error("Invalid combo operand: $operand")
-        }
+    private val Int.combo: Long get() = when (this) {
+        in 0..3 -> toLong()
+        4 -> regA
+        5 -> regB
+        6 -> regC
+        else -> error("Invalid combo operand: $this")
     }
 
-    private fun literalOp(operand: Int): Int = operand
+    private val Int.literal: Int get() = this
 
     companion object {
         const val MAX_CLOCKS = 10000
