@@ -47,12 +47,11 @@ class ChronospatialComputer(
     val program: List<Int>
 ) {
     var instructionPtr = 0
-    var halt = false
     val output = mutableListOf<Int>()
 
     fun run(): List<Int> {
         var clockCount = 0
-        while (clock() && !halt && clockCount++ < MAX_CLOCKS);
+        while (clock() && clockCount++ < MAX_CLOCKS);
         return output
     }
 
