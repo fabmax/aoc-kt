@@ -21,18 +21,10 @@ object Day17 : AocPuzzle<String, Long>() {
         val c = input[2].extractNumbers()[0].toLong()
         val program = input[4].extractNumbers()
 
-        fun findA(targetOutput: List<Int>): List<Long> {
-            val prefixes = if (targetOutput.size == 1) listOf(0L) else findA(targetOutput.drop(1)).map { it shl 3 }
-            return buildList {
-                prefixes.forEach { prefix ->
-                    for (oc in 0..7) {
-                        val a = prefix + oc
-                        val computer = ChronospatialComputer(a, b, c, program)
-                        if (computer.run() == targetOutput) {
-                            add(a)
-                        }
-                    }
-                }
+        fun findA(target: List<Int>): List<Long> {
+            val prefixes = if (target.size == 1) listOf(0L) else findA(target.drop(1)).map { it shl 3 }
+            return prefixes.flatMap { prefix ->
+                (0..7).map { prefix + it }.filter { a -> ChronospatialComputer(a, b, c, program).run() == target }
             }
         }
 
