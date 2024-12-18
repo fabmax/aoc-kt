@@ -79,6 +79,21 @@ fun Vec2i.isInLimits(width: Int, height: Int): Boolean {
     return x in 0 until width && y in 0 until height
 }
 
+fun Vec2i.neighbors(withDiagonal: Boolean = false): List<Vec2i> {
+    return buildList {
+        add(Vec2i(x, y-1))
+        add(Vec2i(x+1, y))
+        add(Vec2i(x, y+1))
+        add(Vec2i(x-1, y))
+        if (withDiagonal) {
+            add(Vec2i(x-1, y-1))
+            add(Vec2i(x+1, y-1))
+            add(Vec2i(x+1, y+1))
+            add(Vec2i(x-1, y+1))
+        }
+    }
+}
+
 fun Vec3i(str: String, delim: Char = ','): Vec3i {
     val (x, y, z) = str.split(delim).filter { it.isNotBlank() }.map { it.trim().toInt() }
     return Vec3i(x, y, z)
