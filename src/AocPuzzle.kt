@@ -50,7 +50,10 @@ abstract class AocPuzzle<A: Any, B: Any> {
         throw PartNotImplementedException(2)
     }
     
-    fun runAll() {
+    fun runAll(alsoBenchmarks: Boolean = false) {
+        if (alsoBenchmarks) {
+            runBenchmark()
+        }
         runTests()
         println()
         runPuzzle()

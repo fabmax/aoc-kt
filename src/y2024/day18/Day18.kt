@@ -5,10 +5,7 @@ import de.fabmax.kool.math.Vec2i
 import extractNumbers
 import neighbors
 
-fun main() {
-    Day18.runAll()
-    Day18.runBenchmark()
-}
+fun main() = Day18.runAll(alsoBenchmarks = true)
 
 object Day18 : AocPuzzle<Int, String>() {
     override fun solve1(input: List<String>): Int {
