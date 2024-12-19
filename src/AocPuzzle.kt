@@ -60,14 +60,14 @@ abstract class AocPuzzle<A: Any, B: Any> {
     }
 
     fun runPuzzle() {
-        println("Day $day Puzzle:")
+        printColored("Day $day Puzzle:\n", AnsiColor.BRIGHT_YELLOW, bold = true)
 
         prepareRun(Run.PuzzleRun)
         runParts(part1 = true, part2 = true)
     }
 
     fun runTests(vararg tests: Int) {
-        println("Day $day Tests:")
+        printColored("Day $day Tests:\n", AnsiColor.BRIGHT_YELLOW, bold = true)
 
         inputData.testInputs.forEachIndexed { i, test ->
             if (tests.isEmpty() || (i+1) in tests) {
@@ -136,22 +136,22 @@ abstract class AocPuzzle<A: Any, B: Any> {
                 solve2(input)
             }
             val t1 = (System.nanoTime() - t) / 1e6
-            val answerStr = "${prefix(answer, expected)}Answer part $part: $answer"
-            println("  %-36s %9.3f ms".format(answerStr, t1))
+            val (pre, post) = deco(answer, expected)
+            println("  %s Part %d: %-20s %9.3f ms %s".format(pre, part, answer, t1, post))
         } catch (e: PartNotImplementedException) {
-            println("  Part ${e.part} not yet implemented")
+            printColored("  Part ${e.part} not yet implemented", AnsiColor.BRIGHT_CYAN)
         }
     }
 
-    private fun prefix(answer: Any?, expected: String?): String {
+    private fun deco(answer: Any?, expected: String?): Pair<String, String> {
         return when(expected) {
-            null -> coloredString("[??] ", AnsiColor.CYAN)
-            answer.toString() -> coloredString("[OK] ", AnsiColor.BRIGHT_GREEN)
-            else -> coloredString("[NO] ", AnsiColor.BRIGHT_RED)
+            null -> coloredString("[??]", AnsiColor.CYAN) to ""
+            answer.toString() -> coloredString("[OK]", AnsiColor.BRIGHT_GREEN) to ""
+            else -> coloredString("[NO]", AnsiColor.BRIGHT_RED) to coloredString("(expected: $expected)", AnsiColor.BRIGHT_RED)
 
-            //null -> "❔ "
-            //answer.toString() -> "✅ "
-            //else -> "❌ "
+            //null -> "❔" to ""
+            //answer.toString() -> "✅" to ""
+            //else -> "❌" to ""
         }
     }
 
