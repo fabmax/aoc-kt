@@ -7,6 +7,7 @@ import extractNumbers
 import manhattanDistance
 import neighbors
 import kotlin.math.abs
+import kotlin.math.max
 
 fun main() = Day20.runAll()
 
@@ -33,8 +34,8 @@ object Day20 : AocPuzzle<Int, Int>() {
         var cnt = 0
         coordSequence(width, height).filter { it in nodes }.forEach { startCoord ->
             val startDist = nodes[startCoord]!!.distance
-            coordSequence(width, height)
-                .filter { it in nodes && it.manhattanDistance(startCoord) <= maxCheatLen }
+            startCoord.neighborhoodCoords(maxCheatLen, width, height)
+                .filter { it.manhattanDistance(startCoord) <= maxCheatLen && it in nodes }
                 .forEach { endCoord ->
                     val endDist = nodes[endCoord]!!.distance
                     val save = endDist - startDist - startCoord.manhattanDistance(endCoord)
@@ -68,6 +69,14 @@ object Day20 : AocPuzzle<Int, Int>() {
     }
 
     data class PathNode(val pos: Vec2i, val distance: Int)
+
+    fun Vec2i.neighborhoodCoords(maxDist: Int, width: Int, height: Int): Sequence<Vec2i> {
+        val fromX = (x - maxDist).coerceAtLeast(1)
+        val fromY = (y - maxDist).coerceAtLeast(1)
+        val toX = (x + maxDist).coerceAtMost(width - 2)
+        val toY = (y + maxDist).coerceAtMost(height - 2)
+        return coordSequence(fromX..toX, fromY..toY)
+    }
 
     operator fun List<String>.get(pos: Vec2i): Char? = getOrNull(pos.y)?.getOrNull(pos.x)
 }
