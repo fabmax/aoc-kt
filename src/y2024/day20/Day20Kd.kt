@@ -5,14 +5,12 @@ import coordSequence
 import de.fabmax.kool.math.MutableVec2i
 import de.fabmax.kool.math.Vec2i
 import de.fabmax.kool.math.partition
-import extractNumbers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import manhattanDistance
 import neighbors
-import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
@@ -68,7 +66,7 @@ object Day20Kd : AocPuzzle<Int, Int>() {
 
     operator fun List<String>.get(pos: Vec2i): Char? = getOrNull(pos.y)?.getOrNull(pos.x)
 
-    class KdNode(val parentNodes: MutableList<PathNode>, from: Int, to: Int) {
+    class KdNode(parentNodes: MutableList<PathNode>, from: Int, to: Int) {
         val min: Vec2i
         val max: Vec2i
         val nodes: MutableList<PathNode>
