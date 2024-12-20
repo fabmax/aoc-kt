@@ -31,20 +31,15 @@ object Day20 : AocPuzzle<Int, Int>() {
         val map = input.map { it.replace('S', '.').replace('E', '.') }
         val nodes = dijkstra(map, from, to)
 
-        var cnt = 0
-        coordSequence(width, height).filter { it in nodes }.forEach { startCoord ->
-            val startDist = nodes[startCoord]!!.distance
-            startCoord.neighborhoodCoords(maxCheatLen, width, height)
-                .filter { it.manhattanDistance(startCoord) <= maxCheatLen && it in nodes }
-                .forEach { endCoord ->
+        return nodes.values.sumOf { start ->
+            start.pos.neighborhoodCoords(maxCheatLen, width, height)
+                .filter { it.manhattanDistance(start.pos) <= maxCheatLen && it in nodes }
+                .count { endCoord ->
                     val endDist = nodes[endCoord]!!.distance
-                    val save = endDist - startDist - startCoord.manhattanDistance(endCoord)
-                    if (save >= savedPicos) {
-                        cnt++
-                    }
+                    val save = endDist - start.distance - start.pos.manhattanDistance(endCoord)
+                    save >= savedPicos
                 }
         }
-        return cnt
     }
 
     private fun dijkstra(grid: List<String>, from: Vec2i, to: Vec2i): Map<Vec2i, PathNode> {
