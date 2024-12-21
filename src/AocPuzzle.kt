@@ -1,3 +1,5 @@
+import de.fabmax.kool.util.MdColor
+
 abstract class AocPuzzle<A: Any, B: Any> {
 
     val year = Regex("""\Ay(\d+)""").find(this::class.qualifiedName!!)?.groups?.get(1)!!.value.toInt()
@@ -60,18 +62,18 @@ abstract class AocPuzzle<A: Any, B: Any> {
     }
 
     fun runPuzzle() {
-        printColored("Day $day Puzzle:\n", AnsiColor.BRIGHT_YELLOW, bold = true)
+        printColored("Day $day Puzzle:\n", MdColor.LIGHT_BLUE tone 300, bold = true)
 
         prepareRun(Run.PuzzleRun)
         runParts(part1 = true, part2 = true)
     }
 
     fun runTests(vararg tests: Int) {
-        printColored("Day $day Tests:\n", AnsiColor.BRIGHT_YELLOW, bold = true)
+        printColored("Day $day Tests:\n", MdColor.LIGHT_BLUE tone 300, bold = true)
 
         inputData.testInputs.forEachIndexed { i, test ->
             if (tests.isEmpty() || (i+1) in tests) {
-                println("  [Test ${i + 1}]:")
+                printColored(" [Test ${i + 1}]\n", MdColor.AMBER, bold = true)
                 prepareRun(Run.TestRun(i))
 
                 val isTestPart1 = test.test1 != null
@@ -139,15 +141,15 @@ abstract class AocPuzzle<A: Any, B: Any> {
             val (pre, post) = deco(answer, expected)
             println("  %s Part %d: %-20s %9.3f ms %s".format(pre, part, answer, t1, post))
         } catch (e: PartNotImplementedException) {
-            printColored("  Part ${e.part} not yet implemented", AnsiColor.BRIGHT_CYAN)
+            printColored("  Part ${e.part} not yet implemented", MdColor.CYAN)
         }
     }
 
     private fun deco(answer: Any?, expected: String?): Pair<String, String> {
         return when(expected) {
-            null -> coloredString("[??]", AnsiColor.CYAN) to ""
-            answer.toString() -> coloredString("[OK]", AnsiColor.BRIGHT_GREEN) to ""
-            else -> coloredString("[NO]", AnsiColor.BRIGHT_RED) to coloredString("(expected: $expected)", AnsiColor.BRIGHT_RED)
+            null -> coloredString("[??]", MdColor.CYAN, bold = true) to ""
+            answer.toString() -> coloredString("[OK]", MdColor.LIGHT_GREEN, bold = true) to ""
+            else -> coloredString("[NO]", MdColor.RED, bold = true) to coloredString("(expected: $expected)", MdColor.RED)
 
             //null -> "❔" to ""
             //answer.toString() -> "✅" to ""

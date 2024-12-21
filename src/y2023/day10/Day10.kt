@@ -2,7 +2,7 @@ package y2023.day10
 
 import AnsiColor
 import AocPuzzle
-import printColored
+import printColoredAnsi
 
 fun main() = Day10.runAll()
 
@@ -90,7 +90,7 @@ object Day10 : AocPuzzle<Int, Int>() {
                     else -> AnsiColor.BRIGHT_BLACK
                 }
                 val bgColor = if (it.shape == 'S') AnsiColor.BRIGHT_YELLOW else null
-                printColored("${charMap[it.shape] ?: it.shape}", fgColor, bgColor)
+                printColoredAnsi("${charMap[it.shape] ?: it.shape}", fgColor, bgColor)
             }
             println()
         }

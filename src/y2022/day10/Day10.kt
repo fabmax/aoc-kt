@@ -1,7 +1,7 @@
 package y2022.day10
 
 import AocPuzzle
-import printColored
+import printColoredAnsi
 
 fun main() = Day10.runAll()
 
@@ -50,7 +50,7 @@ object Day10 : AocPuzzle<Int, String>() {
             screen.toList().chunked(40) {
                 print("    ")
                 it.forEach { p ->
-                    if (p == '.') print(" ") else printColored("█", AnsiColor.BRIGHT_GREEN)
+                    if (p == '.') print(" ") else printColoredAnsi("█", AnsiColor.BRIGHT_GREEN)
                 }
                 println()
             }

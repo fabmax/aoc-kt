@@ -3,7 +3,7 @@ package y2022.day12
 import AocPuzzle
 import de.fabmax.kool.math.Vec2i
 import manhattanDistance
-import printColored
+import printColoredAnsi
 import java.util.PriorityQueue
 
 fun main() = Day12.runAll()
@@ -67,11 +67,11 @@ object Day12 : AocPuzzle<Int, Int>() {
             for (x in input[y].indices) {
                 val c = input[y][x]
                 if (Vec2i(x, y) in path) {
-                    printColored("$c", AnsiColor.BRIGHT_RED)
+                    printColoredAnsi("$c", AnsiColor.BRIGHT_RED)
                 } else if (c == 'a') {
-                    printColored("$c", AnsiColor.BRIGHT_BLUE)
+                    printColoredAnsi("$c", AnsiColor.BRIGHT_BLUE)
                 } else if (c == 'c') {
-                    printColored("$c", AnsiColor.GREEN)
+                    printColoredAnsi("$c", AnsiColor.GREEN)
                 } else {
                     print("$c")
                 }
