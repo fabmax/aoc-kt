@@ -2,7 +2,8 @@ package y2023.day21
 
 import AocPuzzle
 import de.fabmax.kool.math.Vec2i
-import printColoredAnsi
+import de.fabmax.kool.util.MdColor
+import printColored
 
 fun main() = Day21.runAll()
 
@@ -137,7 +138,7 @@ object Day21 : AocPuzzle<Int, Long>() {
             for (y in 0 until height) {
                 for (x in 0 until width) {
                     if (Vec2i(x, y) in positions) {
-                        printColoredAnsi("O", AnsiColor.BLUE)
+                        printColored("O", MdColor.BLUE)
                     } else {
                         print(input[y][x])
                     }

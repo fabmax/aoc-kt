@@ -143,17 +143,6 @@ fun leastCommonMultiple(ints: Collection<Int>): Long {
         .fold(1L) { prod, value -> prod * value }
 }
 
-fun printColoredAnsi(text: String, fg: AnsiColor? = null, bg: AnsiColor? = null, bold: Boolean = false, italic: Boolean = false) = print(coloredStringAnsi(text, fg, bg, bold, italic))
-
-fun coloredStringAnsi(text: String, fg: AnsiColor? = null, bg: AnsiColor? = null, bold: Boolean = false, italic: Boolean = false): String {
-    val boldCode = if (bold) "1;" else ""
-    val italicCode = if (italic) "3;" else ""
-    val fgCode = fg?.let { "${it.fg}" } ?: ""
-    val bgCode = bg?.let { "${it.bg}" } ?: ""
-    val sep = if (fgCode.isNotBlank() && bgCode.isNotBlank()) ";" else ""
-    return "\u001b[${boldCode}${italicCode}${fgCode}${sep}${bgCode}m$text\u001B[0m"
-}
-
 fun printColored(text: String, fg: Color? = null, bg: Color? = null, bold: Boolean = false, italic: Boolean = false) = print(coloredString(text, fg, bg, bold, italic))
 
 fun coloredString(text: String, fg: Color? = null, bg: Color? = null, bold: Boolean = false, italic: Boolean = false): String {
@@ -163,32 +152,4 @@ fun coloredString(text: String, fg: Color? = null, bg: Color? = null, bold: Bool
     val bgCode = bg?.let { "48;2;${(it.r * 255).toInt()};${(it.g * 255).toInt()};${(it.b * 255).toInt()}" } ?: ""
     val sep = if (fgCode.isNotBlank() && bgCode.isNotBlank()) ";" else ""
     return "\u001b[${boldCode}${italicCode}${fgCode}${sep}${bgCode}m$text\u001B[0m"
-}
-
-inline fun <R> timed(block: () -> R): R {
-    val t = System.nanoTime()
-    val result = block()
-    println("%.3f ms".format((System.nanoTime() - t) / 1e6))
-    return result
-}
-
-@Suppress("unused")
-enum class AnsiColor(val fg: Int, val bg: Int) {
-    BLACK(30, 40),
-    RED(31, 41),
-    GREEN(32, 42),
-    YELLOW(33, 43),
-    BLUE(34, 44),
-    MAGENTA(35, 45),
-    CYAN(36, 46),
-    WHITE(37, 47),
-
-    BRIGHT_BLACK(90, 100),
-    BRIGHT_RED(91, 101),
-    BRIGHT_GREEN(92, 102),
-    BRIGHT_YELLOW(93, 103),
-    BRIGHT_BLUE(94, 104),
-    BRIGHT_MAGENTA(95, 105),
-    BRIGHT_CYAN(96, 106),
-    BRIGHT_WHITE(97, 107),
 }

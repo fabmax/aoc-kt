@@ -1,8 +1,9 @@
 package y2023.day10
 
-import AnsiColor
 import AocPuzzle
-import printColoredAnsi
+import de.fabmax.kool.util.Color
+import de.fabmax.kool.util.MdColor
+import printColored
 
 fun main() = Day10.runAll()
 
@@ -84,13 +85,13 @@ object Day10 : AocPuzzle<Int, Int>() {
             print("      ")
             row.forEach {
                 val fgColor = when {
-                    it.shape == 'S' -> AnsiColor.BLACK
-                    it in loop -> AnsiColor.BRIGHT_BLUE
-                    it.isInside(loopPoly) -> AnsiColor.RED
-                    else -> AnsiColor.BRIGHT_BLACK
+                    it.shape == 'S' -> Color.BLACK
+                    it in loop -> MdColor.LIGHT_BLUE
+                    it.isInside(loopPoly) -> MdColor.RED
+                    else -> MdColor.GREY
                 }
-                val bgColor = if (it.shape == 'S') AnsiColor.BRIGHT_YELLOW else null
-                printColoredAnsi("${charMap[it.shape] ?: it.shape}", fgColor, bgColor)
+                val bgColor = if (it.shape == 'S') MdColor.AMBER else null
+                printColored("${charMap[it.shape] ?: it.shape}", fgColor, bgColor)
             }
             println()
         }
