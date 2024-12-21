@@ -1,3 +1,4 @@
+import de.fabmax.kool.util.Color
 import de.fabmax.kool.util.MdColor
 
 abstract class AocPuzzle<A: Any, B: Any> {
@@ -62,18 +63,18 @@ abstract class AocPuzzle<A: Any, B: Any> {
     }
 
     fun runPuzzle() {
-        printColored("Day $day Puzzle:\n", MdColor.LIGHT_BLUE tone 300, bold = true)
+        printColored("Day $day Puzzle:\n", MdColor.LIGHT_BLUE, bold = true)
 
         prepareRun(Run.PuzzleRun)
         runParts(part1 = true, part2 = true)
     }
 
     fun runTests(vararg tests: Int) {
-        printColored("Day $day Tests:\n", MdColor.LIGHT_BLUE tone 300, bold = true)
+        printColored("Day $day Tests:\n", MdColor.LIGHT_BLUE, bold = true)
 
         inputData.testInputs.forEachIndexed { i, test ->
             if (tests.isEmpty() || (i+1) in tests) {
-                printColored(" [Test ${i + 1}]\n", MdColor.AMBER, bold = true)
+                printColored(" [Test ${i + 1}]\n", MdColor.AMBER)
                 prepareRun(Run.TestRun(i))
 
                 val isTestPart1 = test.test1 != null
@@ -86,23 +87,30 @@ abstract class AocPuzzle<A: Any, B: Any> {
     fun runBenchmark(warmupSecs: Int = 3, benchmarkSecs: Int = 5) {
         prepareRun(Run.PuzzleRun)
 
-        println("Warming up part 1...")
+        printColored("Warming up part 1...\n", MdColor.DEEP_ORANGE)
         repeat(warmupSecs) { runTimed { solve1(input) } }
-        println("Benchmarking part 1...")
+        printColored("Benchmarking part 1...\n", MdColor.LIGHT_BLUE tone 300)
         val result1 = (1..benchmarkSecs).map { runTimed { solve1(input) } }.sortedBy { it.second }
 
-        println("Warming up part 2...")
+        printColored("Warming up part 2...\n", MdColor.DEEP_ORANGE)
         repeat(warmupSecs) { runTimed { solve2(input) } }
-        println("Benchmarking part 2...")
+        printColored("Benchmarking part 2...\n", MdColor.LIGHT_BLUE tone 300)
         val result2 = (1..benchmarkSecs).map { runTimed { solve2(input) } }.sortedBy { it.second }
 
-        println("-----------------------------")
         val iterations1 = result1.sumOf { it.first }
         val iterations2 = result2.sumOf { it.first }
         val median1 = result1[benchmarkSecs / 2].second
         val median2 = result2[benchmarkSecs / 2].second
-        System.out.printf("Part 1 median:%10.3f ms  (%d benchmark iterations)\n", median1, iterations1)
-        System.out.printf("Part 2 median:%10.3f ms  (%d benchmark iterations)\n", median2, iterations2)
+
+        println("----------------------------------------------------------------")
+        printColored("Part 1 median: ", MdColor.LIME)
+        printColored("%10.3f ms  ".format(median1), MdColor.LIGHT_BLUE, bold = true)
+        printColored("($iterations1 benchmark iterations)\n", MdColor.GREY)
+
+        printColored("Part 2 median: ", MdColor.LIME)
+        printColored("%10.3f ms  ".format(median2), MdColor.LIGHT_BLUE, bold = true)
+        printColored("($iterations2 benchmark iterations)\n", MdColor.GREY)
+        println("----------------------------------------------------------------\n")
     }
 
     private inline fun runTimed(durationNanos: Long = 1_000_000_000L, block: () -> Unit): Pair<Int, Double> {
@@ -137,9 +145,11 @@ abstract class AocPuzzle<A: Any, B: Any> {
             } else {
                 solve2(input)
             }
-            val t1 = (System.nanoTime() - t) / 1e6
+            val elap = (System.nanoTime() - t) / 1e6
             val (pre, post) = deco(answer, expected)
-            println("  %s Part %d: %-20s %9.3f ms %s".format(pre, part, answer, t1, post))
+            val time = coloredString("%9.3f ms".format(elap), MdColor.PURPLE tone 300, bold = true)
+            val answerFmt = coloredString("%-20s".format(answer), Color.WHITE, bold = true)
+            println("  %s Part %d: %s %s %s".format(pre, part, answerFmt, time, post))
         } catch (e: PartNotImplementedException) {
             printColored("  Part ${e.part} not yet implemented", MdColor.CYAN)
         }
@@ -150,10 +160,6 @@ abstract class AocPuzzle<A: Any, B: Any> {
             null -> coloredString("[??]", MdColor.CYAN, bold = true) to ""
             answer.toString() -> coloredString("[OK]", MdColor.LIGHT_GREEN, bold = true) to ""
             else -> coloredString("[NO]", MdColor.RED, bold = true) to coloredString("(expected: $expected)", MdColor.RED)
-
-            //null -> "❔" to ""
-            //answer.toString() -> "✅" to ""
-            //else -> "❌" to ""
         }
     }
 

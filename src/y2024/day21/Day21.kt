@@ -32,12 +32,12 @@ private class Solver {
         val fromPos = keyboard.getButtonPos(from)
         val toPos = keyboard.getButtonPos(to)
         val moves = toPos - fromPos
-        val xKeys = (if (moves.x > 0) ">" else "<").repeat(abs(moves.x))
-        val yKeys = (if (moves.y > 0) "v" else "^").repeat(abs(moves.y))
 
         val minLen = if (depth == 0) {
-            xKeys.length + yKeys.length + 1L
+            abs(moves.x) + abs(moves.y) + 1L
         } else {
+            val xKeys = (if (moves.x > 0) ">" else "<").repeat(abs(moves.x))
+            val yKeys = (if (moves.y > 0) "v" else "^").repeat(abs(moves.y))
             val xLen = "$xKeys$yKeys".computeLen(fromPos, toPos, keyboard, depth)
             val yLen = "$yKeys$xKeys".computeLen(fromPos, toPos, keyboard, depth)
             min(xLen, yLen)
