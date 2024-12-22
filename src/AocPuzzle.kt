@@ -113,12 +113,13 @@ abstract class AocPuzzle<A: Any, B: Any> {
         println("----------------------------------------------------------------\n")
     }
 
-    private inline fun runTimed(durationNanos: Long = 1_000_000_000L, block: () -> Unit): Pair<Int, Double> {
+    private inline fun runTimed(durationNanos: Long = 1_000_000_000L, block: () -> Any): Pair<Int, Double> {
         val start = System.nanoTime()
         var t = System.nanoTime()
         var count = 0
+        var sink = 0
         while (t - start < durationNanos) {
-            block()
+            sink += block().hashCode()
             count++
             t = System.nanoTime()
         }
