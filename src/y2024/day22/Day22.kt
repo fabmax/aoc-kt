@@ -30,9 +30,9 @@ object Day22 : AocPuzzle<Long, Int>() {
 
     private fun rng(seed: Int): Int {
         var state = seed
-        state = (state xor (state * 64)) and 0xffffff
-        state = (state xor (state / 32)) and 0xffffff
-        state = (state xor (state * 2048)) and 0xffffff
+        state = (state xor (state shl 6)) and 0xffffff
+        state = (state xor (state shr 5)) and 0xffffff
+        state = (state xor (state shl 11)) and 0xffffff
         return state
     }
 
