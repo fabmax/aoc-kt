@@ -16,10 +16,10 @@ object Day22 : AocPuzzle<Long, Int>() {
         input.map { it.toInt() }.forEach { seed ->
             generateSequence(seed) { rng(it) }
                 .windowed(2)
-                .map { (a, b) -> PriceItem(b.lastDigit, b.lastDigit - a.lastDigit) }
+                .map { (a, b) -> b.lastDigit - a.lastDigit to b.lastDigit }
                 .take(2001)
                 .windowed(4)
-                .map { wnd -> wnd.map { it.delta } to wnd.last().price }
+                .map { wnd -> wnd.map { it.first } to wnd.last().second }
                 .distinctBy { it.first }
                 .forEach { (deltas, price) ->
                     maxPrices[deltas] = (maxPrices[deltas] ?: 0) + price
@@ -37,6 +37,4 @@ object Day22 : AocPuzzle<Long, Int>() {
     }
 
     private val Int.lastDigit: Int get() = this % 10
-
-    private data class PriceItem(val price: Int, val delta: Int)
 }
