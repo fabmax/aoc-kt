@@ -16,7 +16,7 @@ object Day22 : AocPuzzle<Long, Int>() {
         }
     }
 
-    override fun solve2(input: List<String>): Int = part2Fast()
+    override fun solve2(input: List<String>): Int = part2Fast(input)
 
     fun part2Idiomatic(input: List<String>): Int {
         val maxPrices = mutableMapOf<List<Int>, Int>()
@@ -45,7 +45,7 @@ object Day22 : AocPuzzle<Long, Int>() {
 
     private val Int.lastDigit: Int get() = this % 10
 
-    private fun part2Fast(): Int {
+    private fun part2Fast(input: List<String>): Int {
         val sumPrices = List(19 * 18 * 18 * 18) { AtomicInteger() }
         return runBlocking(Dispatchers.Default) {
             input

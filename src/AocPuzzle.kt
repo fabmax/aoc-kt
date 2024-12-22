@@ -11,24 +11,24 @@ abstract class AocPuzzle<A: Any, B: Any> {
 
     val inputData = InputData(year, day)
 
-    val input: List<String>
+    private val input: List<String>
         get() = when(val r = run) {
             is Run.TestRun -> inputData.testInputs[r.testIdx].testInput
             is Run.PuzzleRun -> inputData.puzzleInput
         }
-    val rawInput: String
+    private val rawInput: String
         get() = when(val r = run) {
             is Run.TestRun -> inputData.testInputs[r.testIdx].testInputRaw
             is Run.PuzzleRun -> inputData.puzzleInputRaw
         }
 
-    val expected1: String?
+    private val expected1: String?
         get() = when(val r = run) {
             is Run.TestRun -> inputData.testInputs[r.testIdx].test1
             is Run.PuzzleRun -> inputData.answerPart1
         }
 
-    val expected2: String?
+    private val expected2: String?
         get() = when(val r = run) {
             is Run.TestRun -> inputData.testInputs[r.testIdx].test2
             is Run.PuzzleRun -> inputData.answerPart2
@@ -41,7 +41,7 @@ abstract class AocPuzzle<A: Any, B: Any> {
         }
     }
 
-    open fun prepareRun(run: Run) {
+    private fun prepareRun(run: Run) {
         this.run = run
     }
     
