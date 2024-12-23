@@ -4,7 +4,7 @@ import AocPuzzle
 import extractNumbers
 import kotlin.math.abs
 
-fun main() = Day23.runAll()
+fun main() = Day23.runAll(true)
 
 object Day23 : AocPuzzle<Int, String>() {
     override fun solve1(input: List<String>): Int {
@@ -14,13 +14,10 @@ object Day23 : AocPuzzle<Int, String>() {
         computers.values.forEach { a ->
             a.connections.forEach { b ->
                 b.connections
-                    .filter { a in it.connections }
-                    .forEach { c ->
-                        val network = listOf(a, b, c).sortedBy { it.name }
-                        if (network.any { it.name.startsWith("t") }) {
-                            setsOfThree += network
-                        }
-                    }
+                    .intersect(a.connections)
+                    .map { listOf(a, b, it) }
+                    .filter { it.any { c -> c.name.startsWith("t") } }
+                    .forEach { setsOfThree += it.sortedBy { c -> c.name } }
             }
         }
         return setsOfThree.size
@@ -33,44 +30,39 @@ object Day23 : AocPuzzle<Int, String>() {
 
         computers.values.forEach { c ->
             if (c !in visited) {
-                val largestSet = largestSet(c.connections + c, emptySet()).sortedBy { it.name }
-                visited += largestSet
-                interconnected += largestSet
+                val largestNetwork = largestSet(c.connections + c, emptySet()).sortedBy { it.name }
+                visited += largestNetwork
+                interconnected += largestNetwork
             }
         }
 
         return interconnected.maxBy { it.size }.joinToString(",")
     }
 
-    fun largestSet(candidates: Set<Computer>, best: Set<Computer>): Set<Computer> {
-        return when {
-            areAllConnected(candidates) -> candidates
-            candidates.size < best.size -> best
-            else -> {
-                var better = best
-                for (remove in candidates) {
+    fun largestSet(candidates: Set<Computer>, best: Set<Computer>): Set<Computer> = when {
+        candidates.size <= best.size -> best
+        candidates.areAllConnected() -> candidates
+        else -> {
+            var better = best
+            for (remove in candidates) {
+                if (remove !in best) {
                     val result = largestSet(candidates - remove, better)
                     if (result.size > better.size) {
                         better = result
                     }
                 }
-                better
             }
+            better
         }
     }
 
-    fun areAllConnected(computers: Set<Computer>): Boolean {
-        return computers.all {
-            (setOf(it) + it.connections).containsAll(computers)
-        }
-    }
+    fun Set<Computer>.areAllConnected(): Boolean = all { (it.connections + it).containsAll(this) }
 
     fun makeComputers(input: List<String>): Map<String, Computer> = buildMap {
         input.map {
             val (a, b) = it.split("-")
             val ca = getOrPut(a) { Computer(a) }
             val cb = getOrPut(b) { Computer(b) }
-
             ca.connections += cb
             cb.connections += ca
         }
