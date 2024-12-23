@@ -4,7 +4,7 @@ import AocPuzzle
 import extractNumbers
 import kotlin.math.abs
 
-fun main() = Day23.runAll(true)
+fun main() = Day23.runAll()
 
 object Day23 : AocPuzzle<Int, String>() {
     override fun solve1(input: List<String>): Int {

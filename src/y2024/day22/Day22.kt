@@ -7,7 +7,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicInteger
 
-fun main() = Day22.runAll(true)
+fun main() = Day22.runAll()
 
 object Day22 : AocPuzzle<Long, Int>() {
     override fun solve1(input: List<String>): Long {
