@@ -152,7 +152,7 @@ abstract class AocPuzzle<A: Any, B: Any> {
             val answerFmt = coloredString("%-20s".format(answer), Color.WHITE, bold = true)
             println("  %s Part %d: %s %s %s".format(pre, part, answerFmt, time, post))
         } catch (e: PartNotImplementedException) {
-            printColored("  Part ${e.part} not yet implemented", MdColor.CYAN)
+            printColored("  Part ${e.part} is not implemented", MdColor.CYAN)
         }
     }
 
